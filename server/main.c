@@ -13,6 +13,11 @@ void	write_pid(pid_t pid)
 
 void	f(int pid)
 {
+	printf("0\n");
+}
+
+void	f2(int pid)
+{
 	printf("1\n");
 }
 
@@ -23,7 +28,10 @@ int main()
 	pid = getpid();
 	write_pid(pid);
 	write(1, "\n", 1);
+	signal(SIGUSR2, f2);
+	signal(SIGUSR1, f);
 	while (1)
-		signal(SIGUSR1, f);
-
+	{
+		pause();
+	}
 }
