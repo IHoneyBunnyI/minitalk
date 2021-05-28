@@ -32,6 +32,7 @@ void	send_byte(char byte, char *pid)
 			printf("1\n");
 			kill(number(pid), SIGUSR2);
 		}
+		usleep(100);
 		i++;
 	}
 	printf("--\n");
