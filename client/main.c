@@ -33,19 +33,12 @@ void	send_byte(char byte, char *pid)
 	{
 		bit = byte >> i & 1;
 		if (bit == 0)
-		{
-			printf("0\n");
 			kill(number(pid), SIGUSR1);
-		}
 		if (bit == 1)
-		{
-			printf("1\n");
 			kill(number(pid), SIGUSR2);
-		}
 		usleep(100);
 		i++;
 	}
-	printf("--\n");
 }
 
 void	send_len_msg(int len_msg, char *pid)
@@ -77,12 +70,11 @@ int main(int ac, char **av)
 	{
 		len_msg = ft_strlen(av[2]);
 		send_len_msg(len_msg, av[1]);
-		/*while (av[2][i])*/
-		/*{*/
-
-			/*send_byte(av[2][i], av[1]);*/
-			/*i++;*/
-		/*}*/
+		while (av[2][i])
+		{
+			send_byte(av[2][i], av[1]);
+			i++;
+		}
 	}
 	else
 		write(1, "Error\n", 6);
