@@ -1,2 +1,5 @@
 a.out
 .DS*
+client/client
+server/server
+*.o
