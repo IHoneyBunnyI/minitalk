@@ -21,14 +21,6 @@ void	len_msg(int sig)
 	g_server.len_msg |= bit << g_server.i++;
 }
 
-void	msg(int sig)
-{
-	int bit;
-
-	bit = sig == 30 ? 0 : 1;
-	g_server.msg[g_server.i_char] |= bit << g_server.i++;
-}
-
 void	get_len_msg(void)
 {
 	g_server.i = 0;
@@ -44,6 +36,14 @@ void	get_len_msg(void)
 	}
 }
 
+void	msg(int sig)
+{
+	int bit;
+
+	bit = sig == 30 ? 0 : 1;
+	g_server.msg[g_server.i_char] |= bit << g_server.i++;
+}
+
 void	get_msg()
 {
 	g_server.i = 0;
@@ -54,14 +54,19 @@ void	get_msg()
 		signal(SIGUSR2, msg);
 		if (g_server.i == 8)
 		{
+			/*printf("char %c\n", g_server.msg[g_server.i_char]);*/
 			g_server.i = 0;
 			g_server.i_char++;
 			if (g_server.i_char == g_server.len_msg)
+			{
 				g_server.msg_done = 1;
+				g_server.i_char = 0;
+			}
 		}
 	}
+	write(1, g_server.msg, g_server.len_msg);
+	write(1, "\n", 1);
 	g_server.len_msg = 0;
-	printf("%s\n", g_server.msg);
 }
 
 int main()
@@ -71,14 +76,23 @@ int main()
 	pid = getpid();
 	write_pid(pid);
 	write(1, "\n", 1);
-	get_len_msg();
-	g_server.msg = malloc(sizeof(char) * (g_server.len_msg + 1));
-	g_server.msg[g_server.len_msg] = 0;
-	if (g_server.len_done)
-	{
-		g_server.len_done = 0;
-		get_msg();
-	}
 	while (1)
-		pause();
+	{
+		if (!g_server.msg_done)
+			get_len_msg();
+		g_server.msg = malloc(sizeof(char) * (g_server.len_msg + 1));
+		g_server.msg[g_server.len_msg] = 0;
+		if (!g_server.msg_done)
+		{
+			g_server.len_done = 0;
+			get_msg();
+		}
+		free(g_server.msg);
+		/*g_server.msg = 0;*/
+		g_server.i = 0;
+		g_server.i_char = 0;
+		g_server.len_msg = 0;
+		g_server.len_done = 0;
+		g_server.msg_done = 0;
+	}
 }
