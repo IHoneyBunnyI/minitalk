@@ -2,7 +2,7 @@
 
 int	only_numbers(char *string)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i[string])
@@ -12,4 +12,14 @@ int	only_numbers(char *string)
 		i++;
 	}
 	return (1);
+}
+
+int	ft_strlen(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

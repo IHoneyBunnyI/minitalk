@@ -1,18 +1,8 @@
 #include "client.h"
 
-int	ft_strlen(char *s)
-{
-	int i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
 int	number(char *s)
 {
-	int result;
+	int	result;
 
 	result = 0;
 	while (*s >= '0' && *s <= '9')
@@ -25,13 +15,13 @@ int	number(char *s)
 
 void	send_byte(char byte, char *pid)
 {
-	int i;
-	char bit;
+	int		i;
+	char	bit;
 
 	i = 0;
 	while (i < 8)
 	{
-		bit = byte >> i & 1;
+		bit = (byte >> i) & 1;
 		if (bit == 0)
 			kill(number(pid), SIGUSR1);
 		if (bit == 1)
@@ -43,13 +33,13 @@ void	send_byte(char byte, char *pid)
 
 void	send_len_msg(int len_msg, char *pid)
 {
-	int i;
-	char bit;
+	int		i;
+	char	bit;
 
 	i = 0;
 	while (i < 32)
 	{
-		bit = len_msg >> i & 1;
+		bit = (len_msg >> i) & 1;
 		if (bit == 0)
 			kill(number(pid), SIGUSR1);
 		if (bit == 1)
@@ -59,10 +49,10 @@ void	send_len_msg(int len_msg, char *pid)
 	}
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	int i;
-	int len_msg;
+	int	i;
+	int	len_msg;
 
 	i = 0;
 	len_msg = 0;

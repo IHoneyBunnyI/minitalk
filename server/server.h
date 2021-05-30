@@ -7,14 +7,14 @@
 
 typedef struct s_server
 {
-	int i;
-	int i_char;
-	int	len_msg;
-	int len_done;
-	int msg_done;
-	char *msg;
+	int		i;
+	int		i_char;
+	int		len_msg;
+	char	*msg;
 }	t_server;
 
-extern t_server g_server;
+extern t_server	g_server;
+
+void	msg(int sig);
 
 #endif
